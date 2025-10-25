@@ -2,6 +2,7 @@ use std::io;
 
 fn main() {
     let mut sum = 0;
+    let mut invalid_input = false;
 
     loop {
         let mut input = String::new();
@@ -12,16 +13,15 @@ fn main() {
             break;
         }
 
-        let number: u32 = match input.parse() {
-            Ok(n) if n > 0 => n,
-            _ => {
-                println!("NaN");
-                return;
-            }
-        };
-
-        sum += number;
+        match input.parse::<u32>() {
+            Ok(n) if n > 0 => sum += n,
+            _ => invalid_input = true,
+        }
     }
 
-    println!("{}", sum);
+    if invalid_input {
+        println!("NaN");
+    } else {
+        println!("{}", sum);
+    }
 }
