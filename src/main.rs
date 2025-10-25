@@ -1,27 +1,25 @@
-use std::io;
+use std::io::{self, BufRead};
 
 fn main() {
+    let stdin = io::stdin();
     let mut sum = 0;
-    let mut invalid_input = false;
 
-    loop {
-        let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
-        let input = input.trim();
+    for line in stdin.lock().lines() {
+        let line = line.unwrap();
+        let trimmed = line.trim();
 
-        if input == "-1" {
+        if trimmed == "-1" {
             break;
         }
 
-        match input.parse::<u32>() {
+        match trimmed.parse::<i32>() {
             Ok(n) if n > 0 => sum += n,
-            _ => invalid_input = true,
+            _ => {
+                println!("NaN");
+                return;
+            }
         }
     }
 
-    if invalid_input {
-        println!("NaN");
-    } else {
-        println!("{}", sum);
-    }
+    println!("{}", sum);
 }
